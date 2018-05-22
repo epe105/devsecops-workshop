@@ -5,7 +5,8 @@ $ scripts/provision.sh --help
 $ scripts/provision.sh deploy --deploy-che --ephemeral
 $ scripts/provision.sh delete
 
-# batch Setup
+# Batch Setup
 $ ./provision-batch-setup.sh
 
-$ Batch Delete
+# Batch Delete
+$ ./provision-batch-delete.sh

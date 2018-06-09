@@ -6,7 +6,7 @@ metadata:
     labels:
       app: cicd-pipeline
       name: cicd-pipeline
-    name: tasks-pipeline4
+    name: tasks-pipeline2
 spec:
     triggers:
       - type: GitHub
@@ -22,9 +22,9 @@ spec:
       jenkinsPipelineStrategy:
         env:
         - name: DEV_PROJECT
-          value: dev-developer
+          value: dev-user1
         - name: STAGE_PROJECT
-          value: stage-developer
+          value: stage-user1
         jenkinsfile: |-
           def version, mvnCmd = "mvn -s configuration/cicd-settings-nexus3.xml"
 

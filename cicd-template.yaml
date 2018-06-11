@@ -53,7 +53,7 @@ objects:
     labels:
       app: cicd-pipeline
       name: cicd-pipeline
-    name: tasks-pipeline1
+    name: tasks-pipeline-preloaded
   spec:
     triggers:
       - type: GitHub

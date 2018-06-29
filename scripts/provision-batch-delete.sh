@@ -5,7 +5,7 @@
 hostname="https://master.ocp-naps.redhatgov.io:8443"
 
 
-for i in {1..20}
+for i in {1..5}
 do
   oc login "$hostname" --insecure-skip-tls-verify -u user${i} -p "redhat!@#"
   ./provision.sh delete

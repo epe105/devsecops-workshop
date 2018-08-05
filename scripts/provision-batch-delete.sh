@@ -1,13 +1,19 @@
 #!/bin/bash
 
+hostname=""
+prefix=student
+count=10
 
-#hostname="https://192.168.42.136:8443"
-hostname="https://master.ocp-naps.redhatgov.io:8443"
 
+if [[ -z "$hostname" ]]; then
+ printf "%s\n" "###############################################################################"
+ printf "%s\n" "#  MAKE SURE YOU ARE LOGGED IN TO AN OPENSHIFT CLUSTER:                       #"
+ printf "%s\n" "#  $ oc login https://your-openshift-cluster:8443                             #"
+ printf "%s\n" "###############################################################################"
+ exit 1
+fi
 
-for i in {1..5}
-do
-  oc login "$hostname" --insecure-skip-tls-verify -u user${i} -p "redhat!@#"
-  ./provision.sh delete
-  echo "Setup user${i}"
+for (( i = 2; i <= $count; i++ )); do
+ oc login "$hostname" --insecure-skip-tls-verify -u $prefix${i} -p "$prefix${i}"
+ ./provision.sh delete
 done

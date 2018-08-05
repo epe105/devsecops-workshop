@@ -1,11 +1,14 @@
 #!/bin/bash
 
-echo "###############################################################################"
-echo "#  MAKE SURE YOU ARE LOGGED IN:                                               #"
-echo "#  $ oc login https://192.168.42.136:8443                                     #"
-echo "###############################################################################"
+if ! $(oc whoami &>/dev/null); then
+ printf "%s\n" "###############################################################################"
+ printf "%s\n" "#  MAKE SURE YOU ARE LOGGED IN TO AN OPENSHIFT CLUSTER:                       #"
+ printf "%s\n" "#  $ oc login https://your-openshift-cluster:8443                             #"
+ printf "%s\n" "###############################################################################"
+ exit 1
+fi
 
-username="user1"
+username="$(oc whoami)"
 
 oc new-project dev-$username   --display-name="Tasks - Dev"
 oc new-project stage-$username --display-name="Tasks - Stage"

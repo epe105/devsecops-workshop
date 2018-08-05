@@ -11,10 +11,10 @@ spec:
     triggers:
       - type: GitHub
         github:
-          secret: ${WEBHOOK_SECRET}
+          secret: "secret101"
       - type: Generic
         generic:
-          secret: ${WEBHOOK_SECRET}
+          secret: "secret101"
     runPolicy: Serial
     source:
       type: None

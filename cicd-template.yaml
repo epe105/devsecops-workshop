@@ -58,10 +58,10 @@ objects:
     triggers:
       - type: GitHub
         github:
-          secret: ${WEBHOOK_SECRET}
+          secret: "secret101"
       - type: Generic
         generic:
-          secret: ${WEBHOOK_SECRET}
+          secret: "secret101"
     runPolicy: Serial
     source:
       type: None
@@ -363,7 +363,7 @@ objects:
             {
               "type": "gogs",
               "config": {
-                "url": "https://openshift.default.svc.cluster.local/oapi/v1/namespaces/$CICD_NAMESPACE/buildconfigs/tasks-pipeline/webhooks/${WEBHOOK_SECRET}/generic",
+                "url": "https://openshift.default.svc.cluster.local/oapi/v1/namespaces/$CICD_NAMESPACE/buildconfigs/tasks-pipeline/webhooks/secret101/generic",
                 "content_type": "json"
               },
               "events": [

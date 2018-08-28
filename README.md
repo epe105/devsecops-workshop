@@ -2,6 +2,9 @@
 You can use either of the OpenShift provsioners from RedHatGov
  - https://github.com/RedHatGov/redhatgov.workshops/tree/master/openshift-aws-setup
  - https://github.com/RedHatGov/redhatgov.workshops/tree/master/openshift_terraform
+ - https://github.com/gnunn1/openshift-aws-setup
+ - https://github.com/jaredhocutt/openshift-provision
+ - https://github.com/bit4man/ansible_agnostic_deployer
 
 # Environment Setup
 If you'd like to setup an individual environment, use the commands below to set it up or delete the single environment.
@@ -31,13 +34,3 @@ If you'd like to delete, run the script for the users you'd like to delete by up
 To run the script
 
 $ ./provision-batch-delete.sh
-
-# Sonarqube
-
-Sonarqube quality profiles sometimes disappears.  To re-mediate this issue, run the following script to redeploy sonarqube.
-
-$ ./redeploy_sonarqube.sh
-
-There is also a batch script for this redeployment.  Update the script for the number of users in your workshop.
-
-$ ./redeploy-sonarqube-batch.sh

@@ -2,6 +2,7 @@
 
 hostname=""
 prefix=student
+begin=1
 count=10
 
 if [[ -z "$hostname" ]]; then
@@ -12,7 +13,7 @@ if [[ -z "$hostname" ]]; then
  exit 1
 fi
 
-for (( i = 2; i <= $count; i++ )); do
+for (( $begin = 2; i <= $count; i++ )); do
  oc login "$hostname" --insecure-skip-tls-verify -u $prefix${i} -p "$prefix${i}"
  ./provision.sh deploy --deploy-che --ephemeral
  sleep 30

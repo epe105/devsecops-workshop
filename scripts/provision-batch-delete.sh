@@ -5,7 +5,6 @@ prefix=student
 begin=1
 count=10
 
-
 if [[ -z "$hostname" ]]; then
  printf "%s\n" "###############################################################################"
  printf "%s\n" "#  MAKE SURE YOU ARE LOGGED IN TO AN OPENSHIFT CLUSTER:                       #"

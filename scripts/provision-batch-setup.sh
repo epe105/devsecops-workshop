@@ -13,7 +13,7 @@ if [[ -z "$hostname" ]]; then
  exit 1
 fi
 
-for (( $begin = 2; i <= $count; i++ )); do
+for (( i = $begin; i <= $count; i++ )); do
  oc login "$hostname" --insecure-skip-tls-verify -u $prefix${i} -p "$prefix${i}"
  ./provision.sh deploy --deploy-che --ephemeral
  sleep 30

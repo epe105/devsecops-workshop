@@ -76,3 +76,9 @@ If you are having issues with Clair, you may need to restart the clair container
 14. Save the configuration
 
 15. Restart the Quay Container Manually
+
+# Jenkins Node with Skopeo
+
+This script also installs a Jenkins Slave Node with Skopeo.
+
+In your pipeline, use "jenkins-slave-image-mgmt" for your jenkins slave node.

@@ -12,16 +12,16 @@ You can use either of the OpenShift provsioners from RedHatGov
 ## Update Environment Variables for Quay and Clair Provisioner
 Update the following variables for your environment in the provision-quay.sh
 
-hostname= Openshift Environment
-clusteradmin= Cluster Administrator
-clusteradminpass= Cluster Administrator
-domain= domain of your OpenShift Environment
-prefix= user prefix
-begin= first user #
-count= last user #
-ocuserpass= openshift password for users
-quayiouser= quay.io user with permission to pull quay container
-quayiopassword= quay.io password
+- hostname= Openshift Environment
+- clusteradmin= Cluster Administrator
+- clusteradminpass= Cluster Administrator
+- domain= domain of your OpenShift Environment
+- prefix= user prefix
+- begin= first user #
+- count= last user #
+- ocuserpass= openshift password for users
+- quayiouser= quay.io user with permission to pull quay container
+- quayiopassword= quay.io password
 
 ## Run Quay and Clair Provisioner
 
@@ -29,7 +29,7 @@ This script will provision the Quay and Clair Pods along with their Databases.
 
 ./provision-quay-batch.sh
 
-## Manually Configure Quay.
+## Manually Configure Quay
 
 Unfortunately, there is no automated way to do this configuration in Quay.  
 

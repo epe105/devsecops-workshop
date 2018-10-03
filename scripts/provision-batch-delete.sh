@@ -1,9 +1,10 @@
 #!/bin/bash
 
-hostname=""
-prefix=student
+hostname=
+password=
+username=
 begin=1
-count=10
+count=3
 
 if [[ -z "$hostname" ]]; then
  printf "%s\n" "###############################################################################"
@@ -14,6 +15,6 @@ if [[ -z "$hostname" ]]; then
 fi
 
 for (( i = $begin; i <= $count; i++ )); do
- oc login "$hostname" --insecure-skip-tls-verify -u $prefix${i} -p "$prefix${i}"
+ oc login "$hostname" --insecure-skip-tls-verify -u "$username${i}" -p "$password${i}"
  ./provision.sh delete
 done

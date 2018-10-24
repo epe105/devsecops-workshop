@@ -11,6 +11,9 @@ source "$DIR/provision-batch-init.sh"
 
 check-hostname
 
+# [TODO]
+# oc adm policy add-cluster-role-to-user self-provisioner system:serviceaccount:eclipse-che:che
+
 for (( i = $begin; i <= $count; i++ )); do
  oc login "$hostname" --insecure-skip-tls-verify -u "$username${i}" -p "$password${i}"
  oc process -f https://raw.githubusercontent.com/epe105/minishift-addons/master/add-ons/che/templates/che-single-user.yml \

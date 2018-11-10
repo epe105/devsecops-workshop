@@ -42,7 +42,7 @@ ec2_key_file: "{{ keys_dir }}/{{ ec2_key_name }}.pem"
 ec2_vpc_cidr_block: 172.31.0.0/16
 
 # EC2 default user password.
-ec2_user_pass: changeme!
+# ec2_user_pass: changeme!
 
 # Wetty terminal in browser port.
 wetty_port: 8888

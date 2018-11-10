@@ -1,0 +1,91 @@
+---
+
+- hosts: localhost
+  connection: local
+
+  vars_files:
+   - vars/aws-config.yml
+
+  tasks:
+   - name: Gather vpc facts
+     ec2_vpc_net_facts:
+      region: "{{ aws_region }}"
+      filters:
+       "tag:Name": "{{ cluster_name_verbose }}"
+       "tag:OpenShiftClusterName": "{{ cluster_name }}"
+       "tag:OpenShiftClusterNameVerbose": "{{ cluster_name_verbose }}"
+     register: ec2_vpc_net
+
+#    - debug: msg="{{ ec2_vpc_net }}"
+
+   - set_fact:
+       ec2_vpc_id: "{{ ec2_vpc_net['vpcs'][0]['id'] }}"
+
+   - name: Create bastion security group
+     ec2_group:
+       name: "{{ cluster_name_verbose }}-bastion"
+       description: "{{ cluster_name_verbose }}-bastion"
+       vpc_id: "{{ ec2_vpc_id }}"
+       region: "{{ aws_region }}"
+       rules:
+        - proto: tcp
+          ports: 22
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          ports: "{{ wetty_port }}"
+          cidr_ip: 0.0.0.0/0
+       tags:
+         Name: "{{ cluster_name_verbose }}-bastion"
+         OpenShiftClusterName: "{{ cluster_name }}"
+         OpenShiftClusterNameVerbose: "{{ cluster_name_verbose }}"
+       state: present
+     register: ec2_create_security_group_bastion
+
+#    - debug: msg="{{ ec2_create_security_group_bastion }}"
+
+   - set_fact:
+       ec2_security_group_bastion_id: "{{ ec2_create_security_group_bastion.group_id }}"
+
+   - name: Gather bastion node facts
+     ec2_instance_facts:
+      region: "{{ aws_region }}"
+      filters:
+       instance-state-name: running
+       "tag:Name": "{{ cluster_name_verbose }}-bastion"
+       "tag:OpenShiftClusterName": "{{ cluster_name }}"
+       "tag:OpenShiftClusterNameVerbose": "{{ cluster_name_verbose }}"
+       "tag:OpenShiftRole": bastion
+     register: ec2_bastion_instance
+
+#    - debug: msg="{{ ec2_bastion_instance }}"
+
+   - name: Add host facts to bastion node
+     add_host:
+       name: "bastion.{{ cluster_name }}.{{ openshift_base_domain }}"
+       ansible_host: "{{ ec2_bastion_instance['instances'][0]['public_ip_address'] }}"
+       ansible_ssh_private_key_file: "{{ ec2_key_file }}"
+       ansible_user: ec2-user
+       rhsm_consumer_name: "{{ ec2_bastion_instance['instances'][0]['tags']['Name'] }}"
+       groups:
+        - openshift_role_bastion
+        - "openshift_cluster_{{ cluster_group_name }}"
+
+#    - debug: msg="{{ hostvars.localhost }}"
+
+- hosts: openshift_role_bastion:&openshift_cluster_{{ cluster_group_name }}
+  any_errors_fatal: yes
+
+  vars_files:
+   - vars/aws-config.yml
+
+  roles:
+  - install-oc
+  - install-odo
+  - install-jq
+  - install-pip
+  - install-epel
+  - install-passlib
+  - install-git
+  - install-wetty
+  - setup-users
+  - setup-cicd

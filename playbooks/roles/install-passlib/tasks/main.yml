@@ -1,0 +1,5 @@
+---
+
+- name: Install Python passlib library
+  pip: name=passlib state=present
+  become: true

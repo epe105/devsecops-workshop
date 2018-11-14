@@ -1,0 +1,220 @@
+---
+
+- import_tasks: certs.yml
+  when: use_lets_encrypt
+
+- name: Install required packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - make
+    - nmap-ncat
+    - npm
+    - gcc-c++
+  become: true
+
+- name: Install wetty globaly
+  command: npm install wetty -g chdir=/home/{{ ansible_user }}
+  args:
+    creates: /usr/lib/node_modules/wetty/bin/wetty.js
+  become: true
+
+- name: Install the patch package
+  package:
+    name: patch
+    state: latest
+  become: true
+
+- name: Patch hterm_all.js to handle iOS spaces
+  patch:
+    backup: yes
+    basedir: /
+    src: hterm_all.js-iOS-patch
+  become: true
+
+- name: Create temporary certificate file
+  tempfile:
+    state: file
+    suffix: cert
+  register: wetty_cert
+  when: use_lets_encrypt
+
+- name: Append wetty certificate(s)
+  shell: "cat {{ item }} >> {{ wetty_cert.path }}"
+  with_items:
+    - "/etc/letsencrypt/live/{{ domain_name }}/cert.pem"
+  when: use_lets_encrypt
+
+- name: Set certificate permissions
+  file:
+    path: "{{ wetty_cert.path }}"
+    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user }}"
+    mode: 0644
+  become: true
+  when: use_lets_encrypt
+
+- name: Copy certificate file
+  copy:
+    src: "{{ wetty_cert.path }}"
+    dest: "/home/{{ ansible_user }}/.ssh/cert.pem"
+    remote_src: yes
+  when: use_lets_encrypt
+
+- name: Create temporary key file
+  tempfile:
+    state: file
+    suffix: cert
+  register: wetty_privkey
+  when: use_lets_encrypt
+
+- name: Append wetty key(s)
+  shell: "cat {{ item }} >> {{ wetty_privkey.path }}"
+  with_items:
+    - "/etc/letsencrypt/live/{{ domain_name }}/privkey.pem"
+  when: use_lets_encrypt
+
+- name: Set key permissions
+  file:
+    path: "{{ wetty_privkey.path }}"
+    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user }}"
+    mode: 0644
+  become: true
+  when: use_lets_encrypt
+
+- name: Copy key file
+  copy:
+    src: "{{ wetty_privkey.path }}"
+    dest: "/home/{{ ansible_user }}/.ssh/privkey.pem"
+    remote_src: yes
+  when: use_lets_encrypt
+
+- name: Generate self-signed certificates
+  command: >
+    openssl req -new
+      -x509
+      -nodes
+      -days {{ openssl_days | default(3650) }}
+      -subj "/C={{ openssl_country | default('US') }}/ST={{ openssl_state | default('California') }}/L={{ openssl_city | default('Los Angeles') }}/O={{ openssl_organization | default('Me, Inc.') }}/OU={{ openssl_unit | default('IT') }}/CN={{ public_dns_zone }}/emailAddress={{ domain_email_address }}"
+      -newkey rsa:2048
+      -keyout /home/{{ ansible_user }}/.ssh/privkey.pem
+      -out /home/{{ ansible_user }}/.ssh/cert.pem
+  args:
+    creates: /home/{{ ansible_user }}/.ssh/*.pem
+  when: not use_lets_encrypt
+
+- name: Set certificate permissions
+  file:
+    path:    "/home/{{ ansible_user }}/.ssh/{{ item }}"
+    group:   "{{ ansible_user }}"
+    owner:   "{{ ansible_user }}"
+    mode:    0400
+  become: true
+  with_items:
+    - cert.pem
+    - privkey.pem
+
+- name: Template systemd service file
+  template:
+    src:   "wetty.service.j2"
+    dest:  "/etc/systemd/system/wetty.service"
+    group: root
+    owner: root
+    mode:  0644
+  become: true
+  notify: wetty
+
+# - name: Open firewalld port
+#   become: true
+#   firewalld:
+#     port: {{ wetty_port }}/tcp
+#     permanent: true
+#     state: enabled
+
+- name: Check firewalld status
+  command: rpm -q firewalld
+  register: rf_result
+  become: true
+  ignore_errors: yes
+
+- name: Turn off firewalld
+  systemd:
+    name: firewalld
+    enabled: no
+    state: stopped
+  become: true
+  when: rf_result.rc == 0
+
+- name: Check iptables status
+  command: service iptables status
+  register: ri_result
+  become: true
+  ignore_errors: yes
+  when: rf_result.rc != 0
+
+- name: Open iptables port
+  iptables:
+    action: append
+    chain: OS_FIREWALL_ALLOW
+    destination_port: "{{ wetty_port }}"
+    jump: ACCEPT
+    protocol: tcp
+    state: present
+  become: true
+  when:
+  - rf_result.rc != 0
+  - ri_result.rc == 0
+
+- name: Append iptables rule
+  lineinfile:
+    path: /etc/sysconfig/iptables
+    insertbefore: "^COMMIT$"
+    line: "-A OS_FIREWALL_ALLOW -p tcp -m state --state NEW -m udp --dport {{ wetty_port }} -j ACCEPT"
+    state: present
+  become: true
+  when:
+  - rf_result.rc != 0
+  - ri_result.rc == 0
+
+- name: Create selinux directory
+  file:
+    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user }}"
+    mode:  0700
+    path:  "/home/{{ ansible_user }}/.selinux"
+    state: directory
+  become: true
+
+- name: Copy selinux modules
+  copy:
+    src:   "{{ item }}"
+    dest:  "/home/{{ ansible_user }}/.selinux"
+    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user }}"
+    mode:  0700
+  with_items:
+    - wetty.pp
+    - wetty.te
+  become: true
+  register: result
+
+- name: Update selinux modules
+  command: semodule -i wetty.pp chdir=/home/{{ ansible_user }}/.selinux
+  notify: wetty
+  become: true
+  when: result.changed
+
+- name: Enable wetty on boot
+  service:
+    name: wetty
+    enabled: yes
+    state: started
+  become: true
+
+- name: Verify wetty status
+  shell: /usr/bin/ncat -v -C --ssl localhost {{ wetty_port }} < /dev/null
+  register: wetty_status
+  changed_when: "wetty_status.rc != 0"
+  ignore_errors: yes

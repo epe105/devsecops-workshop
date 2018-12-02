@@ -76,7 +76,7 @@
        ec2_security_group_ids_new: "{{ my_strings | join(' ') }}"
 
    - name: Modify instance attribute to include new security group
-     local_action: "shell aws --region {{ aws_region }} ec2 modify-instance-attribute --instance-id {{ ec2_instance_bastion_id }} --groups {{ ec2_security_group_ids_new  }} > test.txt"
+     local_action: "shell aws --region {{ aws_region }} ec2 modify-instance-attribute --instance-id {{ ec2_instance_bastion_id }} --groups {{ ec2_security_group_ids_new  }}"
 
    - name: Add host facts to bastion node
      add_host:

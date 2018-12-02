@@ -23,19 +23,11 @@
 
 - name: Ensure generic group exists
   group:
-    name: "{{ generic_group }}"
+    name: "{{ generic_group | default('autobot') }}"
     state: present
   become: true
 
-# - name: Add generic user with generic group
-#   user:
-#     name: "{{ generic_user }}{{ item }}"
-#     password: "{{ generic_pass }}{{ item }}"
-#     group: "{{ generic_group }}"
-#   with_sequence: "count={{ generic_count }}"
-#   become: true
-
 - name: Add generic user and group
-  shell: "useradd {{ generic_user }}{{ item }}; echo {{ generic_pass }}{{ item }} | passwd {{ generic_user }}{{ item }} --stdin; usermod -aG {{ generic_group }} {{ generic_user }}{{ item }}"
+  shell: "useradd {{ generic_user }}{{ item }}; echo {{ generic_pass }}{{ item }} | passwd {{ generic_user }}{{ item }} --stdin; usermod -aG "{{ generic_group | default('autobot') }}" {{ generic_user }}{{ item }}"
   with_sequence: "count={{ generic_count }}"
   become: true

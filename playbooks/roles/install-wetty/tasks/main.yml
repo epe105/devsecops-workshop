@@ -1,8 +1,5 @@
 ---
 
-- import_tasks: certs.yml
-  when: use_lets_encrypt
-
 - name: Install required packages
   yum:
     name: "{{ item }}"
@@ -12,6 +9,61 @@
     - nmap-ncat
     - npm
     - gcc-c++
+  become: true
+
+- name: Check if directory exist example
+  stat:
+    path: /etc/letsencrypt/live/{{ openshift_public_hostname }}
+  register: cert_directory
+
+- name: Create directory for certs
+  file: path=/etc/letsencrypt/live/{{ openshift_public_hostname }} state=directory
+  become: true
+  when: not cert_directory.stat.exists
+
+- name: Get SSL cert for wetty
+  command: >-
+    docker run --rm --name certbot
+    -v "/etc/letsencrypt:/etc/letsencrypt:z"
+    -v "/var/lib/letsencrypt:/var/lib/letsencrypt:z"
+    -e AWS_ACCESS_KEY_ID={{ lookup('env', 'AWS_ACCESS_KEY_ID') }}
+    -e AWS_SECRET_ACCESS_KEY={{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}
+    certbot/dns-route53 certonly
+    --non-interactive
+    --agree-tos
+    --email "{{ cert_email_address }}"
+    --dns-route53
+    --dns-route53-propagation-seconds 30
+    --domain "{{ openshift_public_hostname }}"
+  args:
+    creates: /etc/letsencrypt/live/{{ openshift_public_hostname }}
+  become: true
+  when: letsencrypt_cert_generation and not cert_directory.stat.exists
+
+- name: Get self-signed SSL cert for wetty
+  command: >
+    openssl req -new
+      -x509
+      -nodes
+      -days {{ openssl_days | default(3650) }}
+      -subj "/C={{ openssl_country | default('US') }}/ST={{ openssl_state | default('California') }}/L={{ openssl_ity | default('Los Angeles') }}/O={{ openssl_organization | default('Red Hat, Inc.') }}/OU={{ openssl_unit | default('IT') }}/CN={{ openshift_public_hostname }}/emailAddress={{ cert_email_address }}"
+      -newkey rsa:2048
+      -keyout /etc/letsencrypt/live/{{ openshift_public_hostname }}/privkey.pem
+      -out /etc/letsencrypt/live/{{ openshift_public_hostname }}/cert.pem
+  args:
+    creates: /etc/letsencrypt/live/{{ openshift_public_hostname }}/*.pem
+  become: true
+  when: not letsencrypt_cert_generation and not cert_directory.stat.exists
+
+- name: Give the {{ ansible_user }} access to the certs
+  acl:
+    path: "/etc/letsencrypt"
+    entity: "{{ ansible_user }}"
+    etype: user
+    permissions: rx
+    recursive: yes
+    follow: yes
+    state: present
   become: true
 
 - name: Install wetty globaly
@@ -38,13 +90,11 @@
     state: file
     suffix: cert
   register: wetty_cert
-  when: use_lets_encrypt
 
 - name: Append wetty certificate(s)
   shell: "cat {{ item }} >> {{ wetty_cert.path }}"
   with_items:
-    - "/etc/letsencrypt/live/{{ domain_name }}/cert.pem"
-  when: use_lets_encrypt
+    - "/etc/letsencrypt/live/{{ openshift_public_hostname }}/cert.pem"
 
 - name: Set certificate permissions
   file:
@@ -53,27 +103,23 @@
     owner: "{{ ansible_user }}"
     mode: 0644
   become: true
-  when: use_lets_encrypt
 
 - name: Copy certificate file
   copy:
     src: "{{ wetty_cert.path }}"
     dest: "/home/{{ ansible_user }}/.ssh/cert.pem"
     remote_src: yes
-  when: use_lets_encrypt
 
 - name: Create temporary key file
   tempfile:
     state: file
     suffix: cert
   register: wetty_privkey
-  when: use_lets_encrypt
 
 - name: Append wetty key(s)
   shell: "cat {{ item }} >> {{ wetty_privkey.path }}"
   with_items:
-    - "/etc/letsencrypt/live/{{ domain_name }}/privkey.pem"
-  when: use_lets_encrypt
+    - "/etc/letsencrypt/live/{{ openshift_public_hostname }}/privkey.pem"
 
 - name: Set key permissions
   file:
@@ -82,35 +128,19 @@
     owner: "{{ ansible_user }}"
     mode: 0644
   become: true
-  when: use_lets_encrypt
 
 - name: Copy key file
   copy:
     src: "{{ wetty_privkey.path }}"
     dest: "/home/{{ ansible_user }}/.ssh/privkey.pem"
     remote_src: yes
-  when: use_lets_encrypt
-
-- name: Generate self-signed certificates
-  command: >
-    openssl req -new
-      -x509
-      -nodes
-      -days {{ openssl_days | default(3650) }}
-      -subj "/C={{ openssl_country | default('US') }}/ST={{ openssl_state | default('California') }}/L={{ openssl_city | default('Los Angeles') }}/O={{ openssl_organization | default('Me, Inc.') }}/OU={{ openssl_unit | default('IT') }}/CN={{ public_dns_zone }}/emailAddress={{ domain_email_address }}"
-      -newkey rsa:2048
-      -keyout /home/{{ ansible_user }}/.ssh/privkey.pem
-      -out /home/{{ ansible_user }}/.ssh/cert.pem
-  args:
-    creates: /home/{{ ansible_user }}/.ssh/*.pem
-  when: not use_lets_encrypt
 
 - name: Set certificate permissions
   file:
-    path:    "/home/{{ ansible_user }}/.ssh/{{ item }}"
-    group:   "{{ ansible_user }}"
-    owner:   "{{ ansible_user }}"
-    mode:    0400
+    path: "/home/{{ ansible_user }}/.ssh/{{ item }}"
+    group: "{{ ansible_user }}"
+    owner: "{{ ansible_user }}"
+    mode: 0400
   become: true
   with_items:
     - cert.pem
@@ -126,18 +156,23 @@
   become: true
   notify: wetty
 
-# - name: Open firewalld port
-#   become: true
-#   firewalld:
-#     port: {{ wetty_port }}/tcp
-#     permanent: true
-#     state: enabled
+- name: Reload systemd units
+  command: systemctl daemon-reload
+  register: rd_result
+  become: true
+
+- name: Open firewalld port
+  firewalld:
+    port: "{{ bastion_port_wetty }}/tcp"
+    permanent: true
+    state: enabled
+  become: true
+  when: bastion_firewalld
 
 - name: Check firewalld status
-  command: rpm -q firewalld
+  command: systemctl status firewalld
   register: rf_result
   become: true
-  ignore_errors: yes
 
 - name: Turn off firewalld
   systemd:
@@ -145,20 +180,24 @@
     enabled: no
     state: stopped
   become: true
-  when: rf_result.rc == 0
+  when:
+  - rf_result.rc == 0
+  - not bastion_firewalld
 
 - name: Check iptables status
   command: service iptables status
   register: ri_result
   become: true
   ignore_errors: yes
-  when: rf_result.rc != 0
+  when:
+  - rf_result.rc != 0
+  - not bastion_firewalld
 
 - name: Open iptables port
   iptables:
     action: append
     chain: OS_FIREWALL_ALLOW
-    destination_port: "{{ wetty_port }}"
+    destination_port: "{{ bastion_port_wetty }}"
     jump: ACCEPT
     protocol: tcp
     state: present
@@ -166,17 +205,19 @@
   when:
   - rf_result.rc != 0
   - ri_result.rc == 0
+  - not bastion_firewalld
 
 - name: Append iptables rule
   lineinfile:
     path: /etc/sysconfig/iptables
     insertbefore: "^COMMIT$"
-    line: "-A OS_FIREWALL_ALLOW -p tcp -m state --state NEW -m udp --dport {{ wetty_port }} -j ACCEPT"
+    line: "-A OS_FIREWALL_ALLOW -p tcp -m state --state NEW -m udp --dport {{ bastion_port_wetty }} -j ACCEPT"
     state: present
   become: true
   when:
   - rf_result.rc != 0
   - ri_result.rc == 0
+  - not bastion_firewalld
 
 - name: Create selinux directory
   file:
@@ -214,7 +255,7 @@
   become: true
 
 - name: Verify wetty status
-  shell: /usr/bin/ncat -v -C --ssl localhost {{ wetty_port }} < /dev/null
+  shell: /usr/bin/ncat -v -C --ssl localhost {{ bastion_port_wetty }} < /dev/null
   register: wetty_status
   changed_when: "wetty_status.rc != 0"
   ignore_errors: yes

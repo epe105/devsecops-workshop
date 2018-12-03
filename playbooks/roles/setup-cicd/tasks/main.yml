@@ -27,7 +27,9 @@
 
 - name: Provide details to check CI/CD installation
   debug:
-   msg: "Check file '/home/{{ ansible_user }}/install-cicd.log' on bastion 'ssh ec2-user@{{ domain_name }}' "
+    msg: |
+         Check file '/home/{{ ansible_user }}/install-cicd.log' on '{{ openshift_public_hostname }}'
+         To access ec2 instance 'ssh -i {{ ec2_key_file }} ec2-user@{{ openshift_public_hostname }}'
 
 - name: Run CI/CD installation script
   shell: ./install-cicd.sh |& tee install-cicd.log

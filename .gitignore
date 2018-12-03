@@ -1,6 +1,8 @@
 *.log
 *.bak
 tmp/
+*workspace*
+
 scripts/redeploy-sonarqube-batch.sh
 scripts/redeploy-sonarqube.sh
 scripts/provision-batch-setup-me.sh
@@ -10,3 +12,7 @@ scripts/quay/provision-quay-me.sh
 scripts/quay/provision-quay-batch-me.sh
 scripts/quay/delete-quay-me.sh
 .gitignore
+
+vars/*
+!vars/aws.example.yml
+!vars/aws.example.env

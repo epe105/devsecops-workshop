@@ -105,6 +105,7 @@
   - install-git
   - install-wetty
   - setup-users
+  - setup-dcmm
   - setup-cicd
 
   post_tasks:

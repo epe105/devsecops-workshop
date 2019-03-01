@@ -86,6 +86,12 @@ bastion_port_wetty: 8888
 # Use firewalld instead of iptables on bastion host.
 bastion_firewalld: true
 
+# Default quay configuration.
+clusteradmin: changeme!
+clusteradminpass: changeme!
+quayiouser: changeme!
+quayiopassword: changeme!
+
 # Default ansible configuration.
 ansible_user: ec2-user
 ansible_ssh_private_key_file: "{{ ec2_key_file }}"

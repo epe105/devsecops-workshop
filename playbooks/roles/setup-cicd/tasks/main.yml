@@ -13,10 +13,16 @@
     dest: "/home/{{ ansible_user }}/cache_docker_images.yml"
     mode: 0644
 
-- name: Copy script forbatch provisioning init variables
+- name: Copy script for batch provisioning init variables
   template:
     src: "../files/provision-batch-init.sh"
     dest: "/home/{{ ansible_user }}/devsecops-workshop/scripts/provision-batch-init.sh"
+    mode: 0775
+
+- name: Copy script for quay provisioning init variables
+  template:
+    src: "../files/provision-quay.sh"
+    dest: "/home/{{ ansible_user }}/devsecops-workshop/scripts/quay/provision-quay.sh"
     mode: 0775
 
 - name: Copy script for CI/CD installation

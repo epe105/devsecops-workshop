@@ -18,7 +18,8 @@ RUN yum repolist > /dev/null && \
     yum-config-manager --enable rhel-7-server-extras-rpms  && \
     yum-config-manager --enable rhel-7-server-optional-rpms && \
     yum-config-manager --enable rhel-7-server-ose-3.9-rpms && \
-    INSTALL_PKGS="skopeo" && \
+    yum-config-manager --enable rhel-server-rhscl-7-rpms && \
+    INSTALL_PKGS="skopeo python27-python-pip python-idna atomic docker openscap-utils scap-security-guide" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS
 

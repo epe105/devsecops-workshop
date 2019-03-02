@@ -20,6 +20,20 @@ RUN yum repolist > /dev/null && \
     yum-config-manager --enable rhel-7-server-ose-3.9-rpms && \
     INSTALL_PKGS="skopeo" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
-    rpm -V $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS
+
+
+RUN yum install python27-python-pip -y && \
+    scl enable python27 bash -y
+
+RUN pip install --upgrade pip && \
+    pip install --user docker && \ 
+    pip install --user docker-py
+
+RUN yum install python-idna -y && \
+    yum install atomic -y
+
+RUN yum install openscap-utils -y && \
+    yum install scap-security-guide -y
 
 USER 1001

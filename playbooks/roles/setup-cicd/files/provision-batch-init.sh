@@ -3,7 +3,7 @@
 hostname=https://{{ openshift_public_hostname }}
 password={{ generic_pass }}
 username={{ generic_user }}
-begin=1
+begin={{ generic_count_begin }}
 count={{ generic_count }}
 pause=5
 

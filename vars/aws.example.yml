@@ -60,6 +60,7 @@ openshift_users:
 # Users are created with the prefix plus a number using the password specified.
 generic_user: changeme!
 generic_pass: changeme!
+generic_count_begin: 1
 generic_count: 3
 
 # Derived public DNS entry for your cluster.

@@ -20,6 +20,8 @@ RUN yum repolist > /dev/null && \
     yum-config-manager --enable rhel-7-server-ose-3.9-rpms && \
     INSTALL_PKGS="skopeo" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
-    rpm -V $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS
+
+RUN yum install sshpass -y
 
 USER 1001

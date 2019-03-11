@@ -104,6 +104,7 @@
   - install-passlib
   - install-git
   - install-wetty
+  - install-oscap
   - setup-users
   - setup-dcmm
   - setup-cicd

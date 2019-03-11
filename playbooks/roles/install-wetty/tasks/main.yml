@@ -254,8 +254,8 @@
     state: started
   become: true
 
-- name: Verify wetty status
-  shell: /usr/bin/ncat -v -C --ssl localhost {{ bastion_port_wetty }} < /dev/null
-  register: wetty_status
-  changed_when: "wetty_status.rc != 0"
-  ignore_errors: yes
+# - name: Verify wetty status
+#   shell: /usr/bin/ncat -v -C --ssl localhost {{ bastion_port_wetty }} < /dev/null
+#   register: wetty_status
+#   changed_when: "wetty_status.rc != 0"
+#   ignore_errors: yes

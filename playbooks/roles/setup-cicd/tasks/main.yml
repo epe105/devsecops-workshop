@@ -41,3 +41,14 @@
   shell: ./install-cicd.sh |& tee install-cicd.log
   args:
    chdir: "/home/{{ ansible_user }}"
+
+- name: Update docker options
+  shell: "sed -i '/OPTIONS=.*/c\\OPTIONS=\"--selinux-enabled --signature-verification=False --insecure-registry docker-registry-default.apps.{{ openshift_public_hostname }}\"' /etc/sysconfig/docker"
+  become: true
+
+- name: Allow group to use oscap-docker without sudo password
+  lineinfile:
+    dest: /etc/sudoers
+    line: "%{{ generic_group | default('autobot') }} ALL=NOPASSWD: /usr/bin/oscap-docker"
+    validate: '/usr/sbin/visudo -cf %s'
+  become: true

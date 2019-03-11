@@ -1,0 +1,7 @@
+---
+- name: Install OpenSCAP tools
+  yum:
+    name:
+      - "openscap-utils"
+      - "scap-security-guide"
+  become: true

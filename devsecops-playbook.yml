@@ -103,6 +103,7 @@
   - install-epel
   - install-passlib
   - install-git
+  - install-oscap
   - install-wetty
   - setup-users
   - setup-dcmm

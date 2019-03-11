@@ -58,6 +58,7 @@ openshift_users:
 
 # Generates a set of non-admin users that can be used for workshops, demos, etc.
 # Users are created with the prefix plus a number using the password specified.
+generic_group: docker
 generic_user: changeme!
 generic_pass: changeme!
 generic_count_begin: 1

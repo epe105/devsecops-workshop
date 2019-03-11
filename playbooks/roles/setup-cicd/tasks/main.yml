@@ -43,5 +43,5 @@
    chdir: "/home/{{ ansible_user }}"
 
 - name: Update docker options
-  shell: "sed -i '/OPTIONS=.*/c\\OPTIONS=\"--selinux-enabled --signature-verification=False --insecure-registry registry-console-default.apps.{{ openshift_public_hostname }}\"' /etc/sysconfig/docker"
+  shell: "sed -i '/OPTIONS=.*/c\\OPTIONS=\"--selinux-enabled --signature-verification=False --insecure-registry docker-registry-default.apps.{{ openshift_public_hostname }}\"' /etc/sysconfig/docker"
   become: true

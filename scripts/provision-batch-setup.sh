@@ -17,7 +17,7 @@ for (( i = $begin; i <= $count; i++ )); do
  sleep "$pause"
 
  # Patch service account token for Che
- CHE_TOKEN="$(oc sa get-token che -n cicd-student1)"
+ CHE_TOKEN="$(oc sa get-token che -n cicd-$username${i})"
  JSON_STRING='{"data":{"openshift-oauth-token":"'"$CHE_TOKEN"'"}}'
- oc patch configmaps che -p $JSON_STRING -n cicd-student1
+ oc patch configmaps che -p $JSON_STRING -n cicd-$username${i}
 done

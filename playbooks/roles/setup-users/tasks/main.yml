@@ -28,6 +28,6 @@
   become: true
 
 - name: Add generic user and group
-  shell: "useradd {{ generic_user }}{{ item }}; echo {{ generic_pass }}{{ item }} | passwd {{ generic_user }}{{ item }} --stdin; usermod -aG {{ generic_group | default('autobot') }} {{ generic_user }}{{ item }}"
+  shell: "useradd {{ generic_user }}{{ item }}; echo {{ generic_pass }} | passwd {{ generic_user }}{{ item }} --stdin; usermod -aG {{ generic_group | default('autobot') }} {{ generic_user }}{{ item }}"
   with_sequence: "count={{ generic_count }}"
   become: true

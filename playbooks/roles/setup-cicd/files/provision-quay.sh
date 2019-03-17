@@ -48,7 +48,7 @@ fi
 
 # Install Skopeo on Jenkins
 for (( i = $begin; i <= $count; i++ )); do
- oc login "$hostname" --insecure-skip-tls-verify -u "$username${i}" -p "$password${i}"
+ oc login "$hostname" --insecure-skip-tls-verify -u "$username${i}" -p "$password"
  oc project 'cicd-'$prefix${i}''
  oc process -f jenkins-slave-image-mgmt-template.yml | oc apply -f-
 done

@@ -7,6 +7,9 @@
    - vars/aws.example.yml
 
   tasks:
+   - import_role:
+      name: install-webpage
+
    - name: Gather vpc facts
      ec2_vpc_net_facts:
       region: "{{ aws_region }}"

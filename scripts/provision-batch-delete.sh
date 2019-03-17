@@ -12,7 +12,7 @@ source "$DIR/provision-batch-init.sh"
 check-hostname
 
 for (( i = $begin; i <= $count; i++ )); do
- oc login "$hostname" --insecure-skip-tls-verify -u "$username${i}" -p "$password${i}"
+ oc login "$hostname" --insecure-skip-tls-verify -u "$username${i}" -p "$password"
  ./provision.sh delete
  sleep "$pause"
 done

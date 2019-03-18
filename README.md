@@ -21,8 +21,11 @@ Your workshop users in your OpenShift Environment should have the same password.
 If you'd like to setup an individual environment, use the commands below to set it up or delete the single environment.
 
 ## Ansible Playbook for setting up the Entire Workshop Enviornment on OpenShift
+- copy over you ssh key into the /keys folder and set the permission to 400
 - the Update your configuration aws.example.env and aws.example.yml in the vars/ folder
-- run the ansible playbook devsecops-playbooks.yml
+- run the ansible playbook using the devsecops-playbook-run.sh script
+
+$ ./devsecops-playbook-run.sh script
 
 ## Help
 
@@ -53,7 +56,9 @@ $ ./provision-batch-delete.sh
 # Quay and Clair Provisioner on OpenShift
 This project will install Quay and Clair on Openshift.
 
-## Must have existing OpenShift Environment
+## Must have existing OpenShift Environment with a Valid Certificate
+Please make sure you have a Valid Certificate and not a self signed certificate.
+
 You can use either of the OpenShift provsioners from RedHatGov
  - https://github.com/RedHatGov/redhatgov.workshops/tree/master/openshift-aws-setup
  - https://github.com/RedHatGov/redhatgov.workshops/tree/master/openshift_terraform

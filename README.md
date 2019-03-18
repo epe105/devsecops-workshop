@@ -131,13 +131,13 @@ If you are having issues with Clair, you may need to restart the clair container
 - clair entered RUNNING state
 - "finished fetching"..."rhel"
 
-# Jenkins Node with Skopeo
+## Jenkins Node with Skopeo
 
 This script also installs a Jenkins Slave Node with Skopeo.
 
 In your pipeline, use "jenkins-slave-image-mgmt" for your jenkins slave node.
 
-## Creating Workshop WebPage
+# Creating Workshop WebPage
 
 Please update the following values in your vars/aws.example.yml for creating a Environment Workshop WebPage.
 

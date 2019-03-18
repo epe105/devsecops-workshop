@@ -16,6 +16,10 @@ quayiopassword={{ quayiopassword }}
 # Login as cluster admin
 oc login "$hostname" --insecure-skip-tls-verify -u "$clusteradmin" -p "$clusteradminpass"
 
+# Import Images
+oc project openshift
+oc import-image jenkins:2
+
 # Check if quay-enterprise project already exists
 if ! oc get project quay-enterprise &>/dev/null; then
  oc new-project quay-enterprise

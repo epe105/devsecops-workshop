@@ -279,15 +279,6 @@ $("document").ready(function(){
                             <br>
                         </div>                        
                         <div class="row">
-                            <div class="col-sm-4">
-                                username:   user{{number}}<br>
-                                password:   {{generic_pass}}<br>                               
-                            </div>
-                            <div class="col-sm-4">
-                                <a class="btn btn-secondary btn-block" href="https://{{cluster_name}}.{{openshift_base_domain}}:8888" target="_blank">Browser Terminal (Wetty)</a>
-                            </div>
-                        </div>
-                        <div class="row">
                             <br>
                         </div>                        
                         <div class="row">
@@ -357,6 +348,15 @@ $("document").ready(function(){
                             </div>          
                             <div class="col-sm-4">
                                 <a class="btn btn-secondary btn-block" href="http://quay-enterprise-quay-enterprise.apps.{{cluster_name}}.{{openshift_base_domain}}" target="_blank">Image Repository (Quay)</a>
+                            </div>
+                        </div>                        
+                        <div class="row">
+                            <div class="col-sm-4">
+                                username:   user{{number}}<br>
+                                password:   {{generic_pass}}<br>                               
+                            </div>
+                            <div class="col-sm-4">
+                                <a class="btn btn-secondary btn-block" href="https://{{cluster_name}}.{{openshift_base_domain}}:8888" target="_blank">Browser Terminal (Wetty)</a>
                             </div>
                         </div>                        
                 </div>

@@ -24,7 +24,7 @@ If you'd like to setup an individual environment, use the commands below to set 
 - copy over you ssh key into the /keys folder and set the permission to 400
 - the Update your configuration aws.example.env and aws.example.yml in the vars/ folder
 - run the ansible playbook using the devsecops-playbook-run.sh script
-
+- manually restart your OpenShift Environment after the playbook run
 $ ./devsecops-playbook-run.sh script
 
 ## Help

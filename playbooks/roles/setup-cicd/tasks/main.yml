@@ -52,3 +52,11 @@
     line: "%{{ generic_group | default('autobot') }} ALL=NOPASSWD: /usr/bin/oscap-docker"
     validate: '/usr/sbin/visudo -cf %s'
   become: true
+
+- name: Allow password authentication
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^PasswordAuthentication"
+              line="PasswordAuthentication yes"
+              state=present
+  become: true
+  notify: Restart sshd

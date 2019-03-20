@@ -118,3 +118,4 @@
        msg: |
         "The script has completed successfully."
         "Wetty console: https://{{ openshift_public_hostname }}:{{ bastion_port_wetty }}"
+        "Please Restart your Openshift Cluster."        

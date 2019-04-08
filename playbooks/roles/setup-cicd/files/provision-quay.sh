@@ -13,6 +13,9 @@ password={{ generic_pass }}
 quayiouser={{ quayiouser }}
 quayiopassword={{ quayiopassword }}
 
+# Logout of any user
+oc logout
+
 # Login as cluster admin
 oc login "$hostname" --insecure-skip-tls-verify -u "$clusteradmin" -p "$clusteradminpass"
 

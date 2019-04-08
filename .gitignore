@@ -1,6 +1,7 @@
 *.log
 *.bak
 tmp/
+webpage/*-index.html
 *workspace*
 
 scripts/redeploy-sonarqube-batch.sh

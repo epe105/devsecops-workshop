@@ -20,4 +20,7 @@ for (( i = $begin; i <= $count; i++ )); do
  CHE_TOKEN="$(oc sa get-token che -n cicd-$username${i})"
  JSON_STRING='{"data":{"openshift-oauth-token":"'"$CHE_TOKEN"'"}}'
  oc patch configmaps che -p $JSON_STRING -n cicd-$username${i}
+ JSON_STRING='{"data":{"pvc-strategy":"common"}}'
+ oc patch configmaps che -p $JSON_STRING -n cicd-$username${i}
+ oc rollout latest dc/che -n cicd-$username${i}
 done

@@ -5,4 +5,5 @@
   register: restart_status
   until: restart_status|success
   retries: 30
-  delay: 5
+  delay: 20
+  become: true

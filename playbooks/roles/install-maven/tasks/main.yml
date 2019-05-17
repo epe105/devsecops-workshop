@@ -1,0 +1,7 @@
+---
+
+- name: Install Apache Maven
+  yum:
+    name:
+      - maven
+  become: true

@@ -119,7 +119,7 @@ Unfortunately, there is no automated way to do this configuration in Quay.
 
 10. Scroll down and Select "Enable Security Scanning" check mark
 
-11. Enter Security Scanner Endpoint of your clairsvc.  i.e. http://clairsvc-quay-enterprise.apps.ocp-devsecops.redhatgov.io
+11. Enter Security Scanner Endpoint of your clairsvc: http://clairsvc:6060
 
 12. Click Create Key
 

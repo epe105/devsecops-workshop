@@ -54,6 +54,8 @@ To run the script
 $ ./provision-batch-delete.sh
 
 # Quay and Clair Provisioner on OpenShift
+Note: If the ansible playbook was run, skip to "Manually Configure Quay" Section.
+
 This project will install Quay and Clair on Openshift.
 
 ## Must have existing OpenShift Environment with a Valid Certificate

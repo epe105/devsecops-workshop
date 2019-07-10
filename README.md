@@ -6,6 +6,7 @@ We recommend that you provision about 5-10GBs of Memory per User.  For a worksho
  - A recent stable version of Python 2.7 and the latest stable version of the boto libraries (lxml, pip, boto, boto3, and botocore)
  - The latest stable versions of Ansible.
  - An AWS account with the aws cli setup to use your access key
+ - For best performance, ensure that the version of the oc cli you use matches the version of the OpenShift cluster. With matching versions users' lab content can and should provision in ~15-30 seconds. 
 
 ## Must have existing OpenShift Environment
 You can use either of the OpenShift provsioners from RedHatGov

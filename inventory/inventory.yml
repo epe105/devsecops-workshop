@@ -3,7 +3,7 @@
 all:
   hosts:
     localhost:
-      ansible_python_interpreter: python
+      ansible_python_interpreter: /usr/bin/python2.7
       ansible_connection: local
   children:
     aws_ec2:

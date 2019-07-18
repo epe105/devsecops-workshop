@@ -2,7 +2,7 @@
 
 - name: Cache docker images
   hosts: nodes
-  remote_user: ec2-user
+  remote_user: {{ ansible_user }}
   vars:
     state: 'present'
   tasks:

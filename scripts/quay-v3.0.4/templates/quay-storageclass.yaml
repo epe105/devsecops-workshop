@@ -1,0 +1,8 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: quay-storageclass
+parameters:
+  type: gp2
+provisioner: kubernetes.io/aws-ebs
+reclaimPolicy: Delete

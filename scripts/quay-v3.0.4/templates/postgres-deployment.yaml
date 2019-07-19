@@ -18,11 +18,11 @@ spec:
             - containerPort: 5432
           env:
           - name: POSTGRESQL_USER
-            value: "defaultuser"
+            value: "admin"
           - name: POSTGRESQL_DATABASE
             value: quay
           - name: POSTGRESQL_PASSWORD
-            value: "nf3V@RqMwGgF"
+            value: "t3amaSFqOg8DAby0nEAP"
           volumeMounts:
             - mountPath: /var/lib/pgsql/data
               name: postgredb

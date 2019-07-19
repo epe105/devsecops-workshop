@@ -22,6 +22,6 @@ spec:
         ports:
         - containerPort: 8443
         command: ["/quay-registry/quay-entrypoint.sh"]
-        args: ["config", "your_secret"]
+        args: ["config", "rAQpXpmFPBmnrMr"]
       imagePullSecrets:
         - name: redhat-quay-pull-secret

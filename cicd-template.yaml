@@ -306,6 +306,10 @@ objects:
             #oc new-app registry.centos.org/rhsyseng/sonarqube
             #oc expose svc/sonarqube
 
+            # Deploying wetty
+            oc create -f https://raw.githubusercontent.com/kevensen/wetty-openshift/master/openshift/wetty-persistant.yaml -n $CICD_NAMESPACE
+            oc new-app wetty-persistant
+
             if [ "${WITH_CHE}" == "true" ] ; then
               oc process -f https://raw.githubusercontent.com/epe105/minishift-addons/master/add-ons/che/templates/che-single-user.yml \
                 --param PROJECT_NAME=$CICD_NAMESPACE \

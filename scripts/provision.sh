@@ -221,6 +221,7 @@ echo_header "OpenShift CI/CD Demo ($(date))"
 case "$ARG_COMMAND" in
  delete)
   echo "Delete demo..."
+
   oc $ARG_OC_OPS delete project dev-$PRJ_SUFFIX stage-$PRJ_SUFFIX cicd-$PRJ_SUFFIX
   echo
   echo "Delete completed successfully!"

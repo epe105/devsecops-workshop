@@ -10,7 +10,6 @@
       shell: /usr/bin/docker pull {{ item }}
       become: true
       with_items:
-       - registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7
        - registry.access.redhat.com/rhscl/postgresql-95-rhel7
        - registry.access.redhat.com/openshift3/jenkins-2-rhel7
        - docker.io/sonatype/nexus3:3.7.1

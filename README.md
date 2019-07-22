@@ -6,7 +6,7 @@ We recommend that you provision about 5-10GBs of Memory per User.  For a worksho
  - A recent stable version of Python 2.7 and the latest stable version of the boto libraries (lxml, pip, boto, boto3, and botocore)
  - The latest stable versions of Ansible.
  - An AWS account with the aws cli setup to use your access key
- - For best performance, ensure that the version of the oc cli you use matches the version of the OpenShift cluster. With matching versions users' lab content can and should provision in ~15-30 seconds. 
+ - For best performance, ensure that the version of the oc cli you use matches the version of the OpenShift cluster. With matching versions users' lab content can and should provision in ~15-30 seconds.
 
 ## Must have existing OpenShift Environment
 You can use either of the OpenShift provsioners from RedHatGov
@@ -35,6 +35,15 @@ $ scripts/provision.sh --help
 ### Individual Environment
 
 $ scripts/provision.sh deploy --deploy-che --ephemeral
+
+
+### RHPDS
+1. update the scripts/provision-batch-init.sh with your enivornment info
+2. run the scripts/provision-batch-setup.sh script
+3. run the scripts/provision-batch-sonarqube.sh
+4. login as as opentlc-mgr
+5. run the scripts/quay-v3.0.4/provision-quay-v3.0.4.sh
+6. optional run the scripts/provision-mgmt.sh
 
 ### Individual Delete
 
@@ -150,5 +159,5 @@ In your pipeline, use "jenkins-slave-image-mgmt" for your jenkins slave node.
 Please update the following values in your vars/aws.example.yml for creating a Environment Workshop WebPage.
 
 -  value must be unique.  The prefix for the subdomain used for workshop page creation.  Please use a separate subdomain from your openshift environment to avoid conflicts. Your webpage will be: subdomain.domain.com
-    -  ec2_name_prefix: 
+    -  ec2_name_prefix:
     - i.e aiworkshop      

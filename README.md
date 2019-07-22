@@ -38,12 +38,14 @@ $ scripts/provision.sh deploy --deploy-che --ephemeral
 
 
 ### RHPDS
-1. update the scripts/provision-batch-init.sh with your enivornment info
-2. run the scripts/provision-batch-setup.sh script
-3. run the scripts/provision-batch-sonarqube.sh
-4. login as as opentlc-mgr
-5. run the scripts/quay-v3.0.4/provision-quay-v3.0.4.sh
-6. optional run the scripts/provision-mgmt.sh
+1. cd scripts
+2. update the scripts/provision-batch-init.sh with your enivornment info
+3. run the scripts/provision-batch-setup.sh script
+4. run the scripts/provision-batch-sonarqube.sh
+5. login as as opentlc-mgr
+6. create a $HOME/.docker/config.json  with permissions to activate
+7. run the scripts/quay-v3.0.4/provision-quay-v3.0.4.sh
+8. optional run the scripts/provision-mgmt.sh
 
 ### Individual Delete
 

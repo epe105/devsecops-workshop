@@ -1,0 +1,11 @@
+---
+
+- hosts: localhost
+  connection: local
+
+  vars_files:
+   - vars/aws.example.yml
+
+  tasks:
+   - import_role:
+      name: install-etherpad

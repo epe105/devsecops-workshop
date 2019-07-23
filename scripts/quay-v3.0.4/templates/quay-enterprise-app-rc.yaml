@@ -33,4 +33,4 @@ spec:
           readOnly: false
           mountPath: /conf/stack
       imagePullSecrets:
-        - name: redhat-pull-secret
+        - name: redhat-quay-pull-secret

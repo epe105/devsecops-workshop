@@ -49,7 +49,7 @@ oc exec -it ${POSTGRESS_POD} -n quay-enterprise \
 
 echo "Create the config secret. "
 if [[ -f $HOME/.docker/config.json ]]; then
-  oc create secret generic redhat-pull-secret \
+  oc create secret generic redhat-quay-pull-secret \
        --from-file=".dockerconfigjson=$HOME/.docker/config.json" \
        --type='kubernetes.io/dockerconfigjson' -n quay-enterprise
 else
@@ -61,7 +61,7 @@ oc create -f templates/quay-servicetoken-role-k8s1-6.yaml -n quay-enterprise
 oc create -f templates/quay-servicetoken-role-binding-k8s1-6.yaml  -n quay-enterprise
 
 oc adm policy add-scc-to-user anyuid \
-     system:serviceaccount:quay-enterprise:default
+     system:serviceaccount:quay-enterprise:default -n quay-enterprise
 
 echo "Create Redis deployment"
 oc create -f templates/quay-enterprise-redis.yaml -n quay-enterprise
@@ -78,7 +78,7 @@ oc create -f templates/quay-enterprise-config-route.yaml -n quay-enterprise
 
 echo "configring clair"
 sed 's/<domain>/'$domain'/' <templates/config-template.yaml >clair-config.yaml
-oc create secret generic clairsecret --from-file=./clair-config.yaml
+oc create secret generic clairsecret --from-file=./clair-config.yaml -n quay-enterprise
 oc create -f templates/clair-kubernetes.yaml -n quay-enterprise
 oc expose svc clairsvc -n quay-enterprise
 
@@ -89,7 +89,8 @@ Quay Login Information
 ****************
 User Name: quayconfig
 Password: rAQpXpmFPBmnrMr
-Quay URL: $(oc get route -n quay-enterprise quay-enterprise-config | grep quay-enterprise-config-quay-enterprise  | awk '{print $2}')
+Quay URL: https://$(oc get route -n quay-enterprise quay-enterprise-config | grep quay-enterprise-config-quay-enterprise  | awk '{print $2}')
+Server Hostname: quay-enterprise
 
 ****************
 Database information for Quay configuration

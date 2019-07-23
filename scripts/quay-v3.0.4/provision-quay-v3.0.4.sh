@@ -16,7 +16,7 @@ if [[ ! -f $HOME/.docker/config.json ]]; then
 fi
 
 function waitforme() {
-  while [[ $(oc get pods $1 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 5; done
+  while [[ $(oc get pods $1 -n quay-enterprise -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 5; done
 }
 
 #hostname=
@@ -33,11 +33,11 @@ echo "Create namespace. "
 oc create -f templates/quay-enterprise-namespace.yaml || exit 1
 
 echo "Create the database."
-oc create -f templates/db-pvc.yaml
-oc create -f templates/postgres-deployment.yaml
-oc create -f templates/postgres-service.yaml
+oc create -f templates/db-pvc.yaml -n quay-enterprise
+oc create -f templates/postgres-deployment.yaml -n quay-enterprise
+oc create -f templates/postgres-service.yaml -n quay-enterprise
 
-POSTGRESS_POD=$(oc get pods | grep postgres- | awk '{print $1}')
+POSTGRESS_POD=$(oc get pods -n quay-enterprise | grep postgres- | awk '{print $1}')
 waitforme $POSTGRESS_POD
 echo "waiting for psql to  initialize"
 sleep 25s
@@ -57,30 +57,30 @@ else
 fi
 
 echo "Create the role and the role binding"
-oc create -f templates/quay-servicetoken-role-k8s1-6.yaml
-oc create -f templates/quay-servicetoken-role-binding-k8s1-6.yaml
+oc create -f templates/quay-servicetoken-role-k8s1-6.yaml -n quay-enterprise
+oc create -f templates/quay-servicetoken-role-binding-k8s1-6.yaml  -n quay-enterprise
 
 oc adm policy add-scc-to-user anyuid \
      system:serviceaccount:quay-enterprise:default
 
 echo "Create Redis deployment"
-oc create -f templates/quay-enterprise-redis.yaml
-REDIS_POD=$(oc get pods | grep quay-enterprise-redis- | awk '{print $1}')
+oc create -f templates/quay-enterprise-redis.yaml -n quay-enterprise
+REDIS_POD=$(oc get pods -n quay-enterprise | grep quay-enterprise-redis- | awk '{print $1}')
 waitforme $REDIS_POD
 
 echo  "Set up to configure Red Hat Quay"
-oc create -f templates/quay-enterprise-config.yaml
-CONFIG_POD=$(oc get pods | grep quay-enterprise-config-app- | awk '{print $1}')
+oc create -f templates/quay-enterprise-config.yaml -n quay-enterprise
+CONFIG_POD=$(oc get pods -n quay-enterprise | grep quay-enterprise-config-app- | awk '{print $1}')
 waitforme $CONFIG_POD
 
-oc create -f templates/quay-enterprise-config-service-clusterip.yaml
-oc create -f templates/quay-enterprise-config-route.yaml
+oc create -f templates/quay-enterprise-config-service-clusterip.yaml -n quay-enterprise
+oc create -f templates/quay-enterprise-config-route.yaml -n quay-enterprise
 
 echo "configring clair"
 sed 's/<domain>/'$domain'/' <templates/config-template.yaml >clair-config.yaml
 oc create secret generic clairsecret --from-file=./clair-config.yaml
-oc create -f templates/clair-kubernetes.yaml
-oc expose svc clairsvc
+oc create -f templates/clair-kubernetes.yaml -n quay-enterprise
+oc expose svc clairsvc -n quay-enterprise
 
 echo  "
 Log in as quayconfig: When prompted, enter
@@ -134,11 +134,11 @@ oc create secret generic quay-enterprise-config-secret \
 
 echo "Start the Red Hat Quay service and route"
 oc create -f templates/quay-enterprise-app-rc.yaml
-QUAY_POD=$(oc get pods | grep quay-enterprise-app- | awk '{print $1}')
+QUAY_POD=$(oc get pods -n quay-enterprise | grep quay-enterprise-app- | awk '{print $1}')
 waitforme $QUAY_POD
 
-oc create -f templates/quay-enterprise-service-clusterip.yaml
-oc create -f templates/quay-enterprise-app-route.yaml
+oc create -f templates/quay-enterprise-service-clusterip.yaml -n quay-enterprise
+oc create -f templates/quay-enterprise-app-route.yaml  -n quay-enterprise
 
 
 echo "checking health of quay"

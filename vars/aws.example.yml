@@ -41,6 +41,12 @@ redhat_registry_username: 1234567|foo
 # Your Red Hat registry password/token
 redhat_registry_password: 0535VZW0qDK3fBjFwJE93emjk8fmzNBLJ2XHN8TNrAsxmaqDOOz2G
 
+#  Number of users to be populated in etherpad
+user_count: 5
+
+# The target namespace of application 
+namespace: workshop-management
+
 # The users to create in OpenShift
 openshift_users:
   - username: admin

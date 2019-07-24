@@ -12,7 +12,7 @@ oc new-project workshop-management
 
 oc adm policy add-scc-to-user anyuid -z ocp-ops-view -n workshop-management
 oc adm policy add-cluster-role-to-user cluster-admin -z ocp-ops-view -n workshop-management
-oc apply -f scripts/workshop-management-templates/ocp-ops-view.yml -n workshop-management
+oc apply -f workshop-management-templates/ocp-ops-view.yml -n workshop-management
 
 # this needs to be tested does not work properly in sub pages
 #oc adm policy add-scc-to-user anyuid -z builder

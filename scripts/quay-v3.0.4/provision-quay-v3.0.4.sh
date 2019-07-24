@@ -6,7 +6,7 @@
 set -e
 
 if [[ -z $1 ]]; then
-  echo "Please pass domain example: example.com"
+  echo "Please pass domain example: app.example.com"
   exit 1
 fi
 
@@ -23,6 +23,7 @@ function waitforme() {
 #clusteradmin=
 #clusteradminpass=
 domain=$1
+source ../provision-batch-init.sh
 
 
 echo "Log in with oc cli"

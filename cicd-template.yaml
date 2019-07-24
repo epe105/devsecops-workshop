@@ -309,7 +309,7 @@ objects:
             # Deploying wetty
             oc create -f https://raw.githubusercontent.com/kevensen/wetty-openshift/master/openshift/wetty-persistant.yaml -n $CICD_NAMESPACE
             oc process -f https://raw.githubusercontent.com/kevensen/wetty-openshift/master/openshift/wetty-openssh.yaml -p WETTY_PASSWORD=openshift -n  $CICD_NAMESPACE | oc create -n  $CICD_NAMESPACE -f -
-            oc create -f https://raw.githubusercontent.com/kevensen/wetty-openshift/master/openshift/wetty-persistant.yaml -n $CICD_NAMESPACE
+            oc new-app wetty-persistant
 
             if [ "${WITH_CHE}" == "true" ] ; then
               oc process -f https://raw.githubusercontent.com/epe105/minishift-addons/master/add-ons/che/templates/che-single-user.yml \

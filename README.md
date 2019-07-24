@@ -38,18 +38,18 @@ $ scripts/provision.sh deploy --deploy-che --ephemeral
 
 
 ### RHPDS
-Configure Workshop
-ssh  into  bastion  host
-git clone
-1. cd scripts
-2. update the scripts/provision-batch-init.sh with your enivornment info
-3. run the scripts/provision-batch-setup.sh script
-4. run the scripts/provision-batch-sonarqube.sh
-5. login as as opentlc-mgr
-6. create a $HOME/.docker/config.json  with permissions to activate
-7. run the scripts/quay-v3.0.4/provision-quay-v3.0.4.sh
-8. Upgrade the  following under vars/aws.example.yml
-9. optional run the scripts/provision-mgmt.sh -> There  is a dependency on  boto3 and botocore for the deploy-etherpad.yml that is called in the script.
+- Configure Workshop
+- ssh  into  bastion  host
+- git clone repo
+- cd scripts
+- update the scripts/provision-batch-init.sh with your enivornment info
+- run the scripts/provision-batch-setup.sh script
+- run the scripts/provision-batch-sonarqube.sh
+- login as as opentlc-mgr
+- create a $HOME/.docker/config.json  with permissions to activate
+- run the scripts/quay-v3.0.4/provision-quay-v3.0.4.sh
+- Upgrade the  following under vars/aws.example.yml
+- optional run the scripts/provision-mgmt.sh -> There  is a dependency on  boto3 and botocore for the deploy-etherpad.yml that is called in the script.
 
 ### Individual Delete
 

@@ -13,7 +13,7 @@ check-hostname
 
 
 oc create -f https://raw.githubusercontent.com/kevensen/wetty-openshift/master/openshift/wetty-scc.yaml
-oc process -f https://github.com/kevensen/wetty-openshift/blob/master/openshift/wetty-openssh.yaml -p WETTY_PASSWORD=$password -n openshift | oc create -n openshift -f -
+oc process -f https://raw.githubusercontent.com/kevensen/wetty-openshift/master/openshift/wetty-openssh.yaml -p WETTY_PASSWORD=$password -n openshift | oc create -n openshift -f -
 
 for (( i = $begin; i <= $count; i++ )); do
  oc login "$hostname" --insecure-skip-tls-verify -u "$username${i}" -p "$password"

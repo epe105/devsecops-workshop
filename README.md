@@ -47,7 +47,7 @@ git clone
 4. run the scripts/provision-batch-sonarqube.sh
 5. login as as opentlc-mgr
 6. create a $HOME/.docker/config.json  with permissions to activate
-7. run the scripts/quay-v3.0.4/provision-quay-v3.0.4.sh
+7. run the scripts/quay-v3.0.4/provision-quay-v3.0.4.sh apps.ocp.example.com
 8. Upgrade the  following under vars/aws.example.yml
 9. optional run the scripts/provision-mgmt.sh -> There  is a dependency on  boto3 and botocore for the deploy-etherpad.yml that is called in the script.
 

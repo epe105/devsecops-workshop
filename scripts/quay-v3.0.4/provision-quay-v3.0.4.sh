@@ -19,11 +19,14 @@ function waitforme() {
   while [[ $(oc get pods $1 -n quay-enterprise -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 5; done
 }
 
-#hostname=
+hostname=
 #clusteradmin=
 #clusteradminpass=
 domain=$1
-
+prefix=user
+begin=1
+count=1
+ocuserpass=
 
 echo "Log in with oc cli"
 #oc login "$hostname" --insecure-skip-tls-verify -u "$clusteradmin" -p "$clusteradminpass"
@@ -77,8 +80,8 @@ oc create -f templates/quay-enterprise-config-service-clusterip.yaml -n quay-ent
 oc create -f templates/quay-enterprise-config-route.yaml -n quay-enterprise
 
 echo "configring clair"
-sed 's/<domain>/'$domain'/' <templates/config-template.yaml >clair-config.yaml
-oc create secret generic clairsecret --from-file=./clair-config.yaml -n quay-enterprise
+sed 's/<domain>/'$domain'/' <templates/config-template.yaml >config.yaml
+oc create secret generic clairsecret --from-file=./config.yaml -n quay-enterprise
 oc create -f templates/clair-kubernetes.yaml -n quay-enterprise
 oc expose svc clairsvc -n quay-enterprise
 
@@ -111,7 +114,7 @@ Redis password:
 ****************
 Security Scanner
 ****************
-Security Scanner Endpoint: http://clairsvc:6060
+Security Scanner Endpoint: http://clairsvc.quay-enterprise.svc.cluster.local:6060
 
 ****************
 Once you are complete with the wizard
@@ -145,3 +148,12 @@ oc create -f templates/quay-enterprise-app-route.yaml  -n quay-enterprise
 echo "checking health of quay"
 oc get route -n quay-enterprise quay-enterprise-config
 oc get pods -n quay-enterprise
+
+
+sleep 10s
+#Install Skopeo on Jenkins
+for (( i = $begin; i <= $count; i++ )); do
+ oc login "$hostname" --insecure-skip-tls-verify -u $prefix${i} -p $ocuserpass
+ oc project 'cicd-'$prefix${i}''
+ oc process -f templates/jenkins-slave-image-mgmt-template.yml | oc apply -f-
+done

@@ -6,7 +6,7 @@
 set -e
 
 if [[ -z $1 ]]; then
-  echo "Please pass domain example: example.com"
+  echo "Please pass domain example: app.example.com"
   exit 1
 fi
 
@@ -23,10 +23,8 @@ hostname=
 #clusteradmin=
 #clusteradminpass=
 domain=$1
-prefix=user
-begin=1
-count=1
-ocuserpass=
+source ../provision-batch-init.sh
+
 
 echo "Log in with oc cli"
 #oc login "$hostname" --insecure-skip-tls-verify -u "$clusteradmin" -p "$clusteradminpass"

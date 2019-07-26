@@ -19,7 +19,7 @@ function waitforme() {
   while [[ $(oc get pods $1 -n quay-enterprise -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pod" && sleep 5; done
 }
 
-hostname=
+
 #clusteradmin=
 #clusteradminpass=
 domain=$1
@@ -90,7 +90,7 @@ Quay Login Information
 ****************
 User Name: quayconfig
 Password: rAQpXpmFPBmnrMr
-Quay URL: https://$(oc get route -n quay-enterprise quay-enterprise-config | grep quay-enterprise-config-quay-enterprise  | awk '{print $2}')
+Quay URL: http://$(oc get route -n quay-enterprise quay-enterprise-config | grep quay-enterprise-config-quay-enterprise  | awk '{print $2}')
 Server Hostname: quay-enterprise
 
 ****************
@@ -151,7 +151,7 @@ oc get pods -n quay-enterprise
 sleep 10s
 #Install Skopeo on Jenkins
 for (( i = $begin; i <= $count; i++ )); do
- oc login "$hostname" --insecure-skip-tls-verify -u $prefix${i} -p $ocuserpass
- oc project 'cicd-'$prefix${i}''
- oc process -f templates/jenkins-slave-image-mgmt-template.yml | oc apply -f-
+ oc login "$hostname" --insecure-skip-tls-verify -u $username${i} -p $password
+ oc project 'cicd-'$username${i}''
+ oc process -f templates/jenkins-slave-image-mgmt-template.yml | oc apply -f- -n  'cicd-'$username${i}''
 done

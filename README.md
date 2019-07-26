@@ -44,7 +44,10 @@ $ scripts/provision.sh deploy --deploy-che --ephemeral
 - cd scripts
 - update the scripts/provision-batch-init.sh with your enivornment info
 - run the scripts/provision-batch-setup.sh script
-- run the scripts/provision-batch-sonarqube.sh
+  - OPTIONS
+    - ./provision-batch-setup.sh --deploy-che
+    - ./provision-batch-setup.sh --deploy-che --ephemeral
+- run the scripts/provision-batch-sonarqube.sh # optional the provision-batch-setup.sh should deploy this for you
 - login as as opentlc-mgr
 - create a $HOME/.docker/config.json  with permissions to activate
 - run the scripts/quay-v3.0.4/provision-quay-v3.0.4.sh

@@ -300,11 +300,12 @@ objects:
 
             sleep 5
 
-            #oc new-app -f https://raw.githubusercontent.com/epe105/sonarqube-openshift-docker/master/sonarqube-template.yaml --param=SONARQUBE_VERSION=7.0 --param=SONAR_MAX_MEMORY=4Gi
-            #oc new-app -f https://raw.githubusercontent.com/RHsyseng/docker-rhel-sonarqube/master/templates/sonarqube-ephemeral-template.yaml --param=SONARQUBE_SERVICE_NAME=sonarqube
-            #oc new-app -f https://raw.githubusercontent.com/tosin2013/sonarqube-openshift-docker/master/sonarqube-postgresql-template.yaml --param=SONARQUBE_VERSION=7.9.1 --param=SONAR_MAX_MEMORY=4Gi
-            #oc new-app registry.centos.org/rhsyseng/sonarqube
-            #oc expose svc/sonarqube
+              # Deploying SonarQube
+             if [ "${EPHEMERAL}" == "true" ] ; then
+                oc new-app -f https://raw.githubusercontent.com/tosin2013/sonarqube-openshift-docker/master/sonarqube-template.yaml  --param=SONARQUBE_VERSION=7.9.1
+             else
+                 oc new-app -f https://raw.githubusercontent.com/tosin2013/sonarqube-openshift-docker/master/sonarqube-postgresql-template.yaml  --param=SONARQUBE_VERSION=7.9.1
+             fi
 
             # Deploying wetty
 

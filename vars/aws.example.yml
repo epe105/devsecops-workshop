@@ -103,15 +103,15 @@ ec2_name_prefix: "devsecops.{{ cluster_name }}"
 s3_state: present
 
 # Install DevSecOps cicd Projects and Quay
-install_quay: false
-install_oscap: false
-install_cicd-projects: false
+install_quay: true
+install_oscap: true
+install_cicd-projects: true
 
 #install wetty and the users for wetty
-install_wetty: false
+install_wetty: true
 
 #install dc metro map 
-install_dcmm: false
+install_dcmm: true
 
 #install tools
 install_tools: false

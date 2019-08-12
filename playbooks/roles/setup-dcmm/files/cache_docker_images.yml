@@ -8,6 +8,7 @@
     - name: Docker pull images
       docker_image:
         name: "{{ item }}"
+      become: true        
       with_items:
        - sonatype/nexus:oss
        - registry.access.redhat.com/openshift3/nodejs-010-rhel7 

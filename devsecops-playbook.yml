@@ -99,18 +99,18 @@
    - vars/aws.example.yml
 
   roles:
-  - install-oc
-  - install-odo
-  - install-jq
-  - install-pip
-  - install-epel
-  - install-passlib
-  - install-git
-  - install-oscap
-  - install-wetty
-  - setup-users
-  - setup-dcmm
-  - setup-cicd
+   - install-oc
+   - install-odo
+   - install-jq
+   - install-pip
+   - install-epel
+   - install-passlib
+   - install-git
+   - install-oscap
+   - install-wetty
+   - setup-users
+   - setup-dcmm
+   - setup-cicd
 
   post_tasks:
    - name: Confirmation message
@@ -118,4 +118,5 @@
        msg: |
         "The script has completed successfully."
         "Wetty console: https://{{ openshift_public_hostname }}:{{ bastion_port_wetty }}"
-        "Please Restart your Openshift Cluster."        
+        "Please Restart your Openshift Cluster."     
+     when: install_wetty   

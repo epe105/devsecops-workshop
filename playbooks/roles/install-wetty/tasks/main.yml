@@ -154,11 +154,16 @@
     owner: root
     mode:  0644
   become: true
-  notify: wetty
 
 - name: Reload systemd units
   command: systemctl daemon-reload
   register: rd_result
+  become: true
+
+- name: Make sure a service is running
+  systemd:
+    state: started
+    name: wetty
   become: true
 
 - name: Open firewalld port

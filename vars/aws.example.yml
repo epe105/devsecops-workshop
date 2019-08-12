@@ -99,5 +99,5 @@ ansible_user: ec2-user
 ansible_ssh_private_key_file: "{{ ec2_key_file }}"
 
 #Workshop Webpage Configuration
-ec2_name_prefix: 
+ec2_name_prefix: "devsecops.{{ cluster_name }}"
 s3_state: present

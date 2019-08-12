@@ -13,6 +13,9 @@ password={{ generic_pass }}
 quayiouser={{ quayiouser }}
 quayiopassword={{ quayiopassword }}
 
+# Logout of any user
+oc logout
+
 # Login as cluster admin
 oc login "$hostname" --insecure-skip-tls-verify -u "$clusteradmin" -p "$clusteradminpass"
 
@@ -53,6 +56,6 @@ fi
 # Install Skopeo on Jenkins
 for (( i = $begin; i <= $count; i++ )); do
  oc login "$hostname" --insecure-skip-tls-verify -u "$username${i}" -p "$password"
- oc project 'cicd-'$prefix${i}''
+ oc project "cicd-$prefix${i}"
  oc process -f jenkins-slave-image-mgmt-template.yml | oc apply -f-
 done

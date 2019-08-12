@@ -101,3 +101,17 @@ ansible_ssh_private_key_file: "{{ ec2_key_file }}"
 #Workshop Webpage Configuration
 ec2_name_prefix: "devsecops.{{ cluster_name }}"
 s3_state: present
+
+# Install DevSecOps cicd Projects and Quay
+install_quay: false
+install_oscap: false
+install_cicd-projects: false
+
+#install wetty and the users for wetty
+install_wetty: false
+
+#install dc metro map 
+install_dcmm: false
+
+#install tools
+install_tools: false

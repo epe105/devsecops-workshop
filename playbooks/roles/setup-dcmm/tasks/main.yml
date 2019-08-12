@@ -1,4 +1,4 @@
 ---
 
-- include: dcmm.yml
+- import_tasks: dcmm.yml
   when: install_dcmm

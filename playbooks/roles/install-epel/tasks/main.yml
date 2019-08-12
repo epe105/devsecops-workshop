@@ -1,4 +1,4 @@
 ---
 
-- include: epel.yml
+- import_tasks: epel.yml
   when: install_tools

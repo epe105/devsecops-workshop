@@ -103,6 +103,9 @@ ec2_name_prefix: "devsecops.{{ cluster_name }}"
 s3_state: present
 
 # Install DevSecOps cicd Projects and Quay
+# if installing workshop and using oscap, always set install_oscap to true
+# for quay to install the skopeo worker agent correctly for each cicd project,
+# run with install_cicd_project equal to true or the projects have been created previously
 install_quay: true
 install_oscap: true
 install_cicd-projects: true

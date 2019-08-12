@@ -1,4 +1,4 @@
 ---
 
-- include: oc.yml
+- import_tasks: oc.yml
   when: install_tools

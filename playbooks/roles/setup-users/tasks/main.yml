@@ -1,4 +1,4 @@
 ---
 
-- include: users.yml
+- import_tasks: users.yml
   when: install_wetty

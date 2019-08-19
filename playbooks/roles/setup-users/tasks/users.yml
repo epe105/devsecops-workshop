@@ -29,5 +29,5 @@
 
 - name: Add generic user and group
   shell: "useradd {{ generic_user }}{{ item }}; echo {{ generic_pass }} | passwd {{ generic_user }}{{ item }} --stdin; usermod -aG {{ generic_group | default('autobot') }} {{ generic_user }}{{ item }}"
-  with_sequence: "count={{ generic_count }}"
+  with_sequence: "start={{ generic_count_begin }} end={{ generic_count }}"
   become: true

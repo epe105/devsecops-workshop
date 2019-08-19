@@ -110,11 +110,17 @@ install_quay: true
 install_oscap: true
 install_cicd-projects: true
 
-#install wetty and the users for wetty
+# Install wetty and the users for wetty
+# if install_wetty is true, the provisioner will install wetty AND create users
+# install_users only creates users
 install_wetty: true
+install_users: true
 
 #install dc metro map 
 install_dcmm: true
 
 #install tools
 install_tools: true
+
+#install devsecops webpage
+install_webpage: true

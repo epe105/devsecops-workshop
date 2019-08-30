@@ -1,5 +1,4 @@
 ---
-
 - name: Cache docker images
   hosts: nodes
   remote_user: ec2-user
@@ -7,11 +6,12 @@
     state: 'present'
   tasks:
     - name: Docker pull images
-      shell: /usr/bin/docker pull {{ item }}
-      become: true
+      docker_image:
+        name: "{{ item }}"
+      become: true        
       with_items:
-       - kubernetes/guestbook
        - sonatype/nexus:oss
+       - registry.access.redhat.com/openshift3/nodejs-010-rhel7 
        - registry.access.redhat.com/rhscl/nodejs-8-rhel7             
        - registry.access.redhat.com/rhscl/nodejs-6-rhel7
        - registry.access.redhat.com/rhscl/nodejs-4-rhel7

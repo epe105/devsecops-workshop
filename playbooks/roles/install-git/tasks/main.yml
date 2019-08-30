@@ -5,3 +5,4 @@
     name:
       - "git"
   become: true
+  when: install_tools

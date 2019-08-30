@@ -1,11 +1,4 @@
 ---
 
-- name: Install Extra Packages for Enterprise Linux (EPEL)
-  yum:
-    name:
-      - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
-  become: true
-
-- name: Enable the optional and extras repositories
-  shell: subscription-manager repos --enable "rhel-*-optional-rpms" --enable "rhel-*-extras-rpms"
-  become: true
+- import_tasks: epel.yml
+  when: install_tools

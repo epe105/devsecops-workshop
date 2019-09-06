@@ -6,6 +6,7 @@ We recommend that you provision about 5-10GBs of Memory per User.  For a worksho
  - A recent stable version of Python 2.7 and the latest stable version of the boto libraries (lxml, pip, boto, boto3, and botocore)
  - The latest stable versions of Ansible.
  - An AWS account with the aws cli setup to use your access key
+ - For best performance, ensure that the version of the oc cli you use matches the version of the OpenShift cluster. With matching versions users' lab content can and should provision in ~15-30 seconds. 
 
 ## Must have existing OpenShift Environment
 You can use either of the OpenShift provsioners from RedHatGov
@@ -54,6 +55,8 @@ To run the script
 $ ./provision-batch-delete.sh
 
 # Quay and Clair Provisioner on OpenShift
+Note: If the ansible playbook was run, skip to "Manually Configure Quay" Section.
+
 This project will install Quay and Clair on Openshift.
 
 ## Must have existing OpenShift Environment with a Valid Certificate
@@ -119,7 +122,7 @@ Unfortunately, there is no automated way to do this configuration in Quay.
 
 10. Scroll down and Select "Enable Security Scanning" check mark
 
-11. Enter Security Scanner Endpoint of your clairsvc.  i.e. http://clairsvc-quay-enterprise.apps.ocp-devsecops.redhatgov.io
+11. Enter Security Scanner Endpoint of your clairsvc: http://clairsvc:6060
 
 12. Click Create Key
 

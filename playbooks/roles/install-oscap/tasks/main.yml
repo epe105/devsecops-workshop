@@ -5,3 +5,4 @@
       - "openscap-utils"
       - "scap-security-guide"
   become: true
+  when: install_oscap

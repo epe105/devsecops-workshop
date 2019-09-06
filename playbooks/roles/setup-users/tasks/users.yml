@@ -1,0 +1,33 @@
+---
+
+- name: Set '{{ ansible_user }}' password
+  user:
+    name: "{{ ansible_user }}"
+    password: "{{ ec2_user_pass |password_hash('sha512') }}"
+    state: present
+    append: yes
+  become: true
+  when: ec2_user_pass is defined and ec2_user_pass|length>0
+
+- name: Update ssh config
+  copy:
+    src: sshd_config
+    dest: "/etc/ssh/sshd_config"
+    group: root
+    owner: root
+    mode: 0644
+  become: true
+  notify:
+    - sshd
+  when: ec2_user_pass is defined and ec2_user_pass|length>0
+
+- name: Ensure generic group exists
+  group:
+    name: "{{ generic_group | default('autobot') }}"
+    state: present
+  become: true
+
+- name: Add generic user and group
+  shell: "useradd {{ generic_user }}{{ item }}; echo {{ generic_pass }} | passwd {{ generic_user }}{{ item }} --stdin; usermod -aG {{ generic_group | default('autobot') }} {{ generic_user }}{{ item }}"
+  with_sequence: "start={{ generic_count_begin }} end={{ generic_count }}"
+  become: true

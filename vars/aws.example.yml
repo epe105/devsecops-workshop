@@ -108,7 +108,7 @@ s3_state: present
 # run with install_cicd_project equal to true or the projects have been created previously
 install_quay: true
 install_oscap: true
-install_cicd-projects: true
+install_cicd_projects: true
 
 # Install wetty and the users for wetty
 # if install_wetty is true, the provisioner will install wetty AND create users

@@ -78,12 +78,12 @@
     state: latest
   become: true
 
-- name: Patch hterm_all.js to handle iOS spaces
-  patch:
-    backup: yes
-    basedir: /
-    src: hterm_all.js-iOS-patch
-  become: true
+# - name: Patch hterm_all.js to handle iOS spaces
+#   patch:
+#     backup: yes
+#     basedir: /
+#     src: hterm_all.js-iOS-patch
+#   become: true
 
 - name: Create temporary certificate file
   tempfile:

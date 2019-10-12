@@ -113,10 +113,11 @@ install_cicd_projects: true
 # Install wetty and the users for wetty
 # if install_wetty is true, the provisioner will install wetty AND create users
 # install_users only creates users
-install_wetty: true
+install_wetty: false
+install_butterfly: true
 install_users: true
 
-#install dc metro map 
+#install dc metro map
 install_dcmm: true
 
 #install tools

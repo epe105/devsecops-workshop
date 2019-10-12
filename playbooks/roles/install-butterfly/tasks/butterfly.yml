@@ -1,0 +1,12 @@
+---
+
+- name: Copy script for batch provisioning butterfly terminal
+  template:
+    src: "../files/oc-web-terminal.sh"
+    dest: "/home/{{ ansible_user }}/oc-web-terminal.sh"
+    mode: 0775
+
+- name: Run butterfly installation script
+  shell: ./oc-web-terminal.sh |& tee install-butterfly.log
+  args:
+   chdir: "/home/{{ ansible_user }}"

@@ -42,10 +42,10 @@ for (( i = $begin; i <= $count; i++ )); do
  oc new-project ocwt-$PRJ_SUFFIX
 
  # Deploy web terminal container.
- oc new-app quay.io/openshiftlabs/workshop-terminal:2.4.0
+ oc new-app quay.io/openshiftlabs/workshop-terminal:2.4.0 -n ocwt-$PRJ_SUFFIX
 
  # Expose web terminal container.
- oc expose svc/workshop-terminal
+ oc expose svc/workshop-terminal -n ocwt-$PRJ_SUFFIX
 
  # Log out of the cluster.
  oc logout

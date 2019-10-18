@@ -56,6 +56,8 @@ openshift_users:
 # IMPORTANT: Setting this allows keyless password login and user has sudo privileges.
 # ec2_user_pass: changeme!
 
+github_user: epe105
+
 # Generates a set of non-admin users that can be used for workshops, demos, etc.
 # Users are created with the prefix plus a number using the password specified.
 generic_group: docker
@@ -75,18 +77,6 @@ keys_dir: /your/path/here/changeme!
 ec2_key_name: "{{ cluster_name_verbose }}"
 # The ec2 instances public key file.
 ec2_key_file: "{{ keys_dir }}/{{ ec2_key_name }}.pem"
-
-# The primary CIDR of the VPC.
-ec2_vpc_cidr_block: 172.31.0.0/16
-
-# Dynamically populated list of existing and new security group ids.
-bastion_security_group_ids: []
-# Targeted ec2 instance default security group name tag. Must have a public route as well.
-bastion_name_tag: changeme!
-# Wetty terminal in browser port.
-bastion_port_wetty: 8888
-# Use firewalld instead of iptables on bastion host.
-bastion_firewalld: true
 
 # Default quay configuration.
 clusteradmin: changeme!
@@ -108,14 +98,11 @@ s3_state: present
 # run with install_cicd_project equal to true or the projects have been created previously
 install_quay: true
 install_oscap: true
+install_users: true
 install_cicd_projects: true
 
-# Install wetty and the users for wetty
-# if install_wetty is true, the provisioner will install wetty AND create users
-# install_users only creates users
-install_wetty: false
+# Install Butterfly TTY terminal
 install_butterfly: true
-install_users: true
 
 #install dc metro map
 install_dcmm: true

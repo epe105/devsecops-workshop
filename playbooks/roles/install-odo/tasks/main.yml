@@ -1,6 +1,0 @@
----
-
-- name: Install openshift do command-line interface
-  shell: "curl -L 'https://github.com/openshift/odo/releases/latest/download/odo-darwin-amd64' -o /usr/bin/odo && chmod +x /usr/bin/odo"
-  become: true
-  when: install_tools

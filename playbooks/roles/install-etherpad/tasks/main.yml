@@ -1,0 +1,42 @@
+---
+#####
+# Etherpad
+#####
+- name: "Create etherpad base text file from template"
+  template:
+    src: etherpad.txt.j2
+    dest: "/root/etherpad.txt"
+
+- set_fact:
+    etherpad_text: "{{ lookup('file', '/root/etherpad.txt') | replace('\n', '\\n')}}"
+
+- name: "Process etherpad template"
+  template:
+    src: etherpad.yml
+    dest: "/root/etherpad.yml"
+
+- name: Ansible Basic Variable Example
+  debug:
+    msg: "{{ openshift_users[0].username }}"
+
+- name: Login to Openshift cluster
+  command: "oc login https://{{ openshift_public_hostname }} -u={{ openshift_users[0].username }} -p={{ openshift_users[0].password }}"
+  when:  openshift_users[0].username  ==  "admin"
+
+- name: Add etherpad template to {{ namespace }}
+  shell: |
+    oc login https://{{ openshift_public_hostname }} -u={{ openshift_users[0].username }} -p={{ openshift_users[0].password }}
+    oc apply -f /root/etherpad.yml -n {{ namespace }}
+  become: yes
+
+- name: Create install etherpad resources
+  shell: >
+        oc new-app etherpad --name=etherpad -n {{ namespace }}
+        --dry-run -o yaml > etherpad.yml
+  args:
+    chdir: "/root"
+
+- name: Apply etherpad objects
+  command: "oc apply -f etherpad.yml -n {{ namespace }}"
+  args:
+    chdir: "/root"

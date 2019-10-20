@@ -55,5 +55,5 @@
      debug:
        msg: |
         "The script has completed successfully."
-        "Webpage: https://{{ ec2_name_prefix }}"
+        "Webpage: http://{{ ec2_name_prefix }}.{{openshift_base_domain}}"
      when: install_webpage

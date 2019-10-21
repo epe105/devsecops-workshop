@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 export ANSIBLE_HOST_KEY_CHECKING=False
+export GITHUB_ACCOUNT={{ github_user }}
 
 ansible-playbook -v /home/{{ ansible_user }}/cache_docker_images.yml
 

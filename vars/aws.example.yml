@@ -65,6 +65,7 @@ generic_user: changeme!
 generic_pass: changeme!
 generic_count_begin: 1
 generic_count: 3
+generic_pause: 30
 
 # Derived public DNS entry for your cluster.
 openshift_public_hostname: "{{ cluster_name }}.{{ openshift_base_domain }}"

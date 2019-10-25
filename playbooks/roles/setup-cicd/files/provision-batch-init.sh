@@ -5,7 +5,7 @@ password={{ generic_pass }}
 username={{ generic_user }}
 begin={{ generic_count_begin }}
 count={{ generic_count }}
-pause=5
+pause={{ generic_pause }}
 
 function check-hostname() {
  if [[ -z "$hostname" ]]; then

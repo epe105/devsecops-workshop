@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: quay-enterprise
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: registry.redhat.io/rhscl/postgresql-10-rhel7:1-35
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          env:
+          - name: POSTGRESQL_USER
+            value: "admin"
+          - name: POSTGRESQL_DATABASE
+            value: quay
+          - name: POSTGRESQL_PASSWORD
+            value: "t3amaSFqOg8DAby0nEAP"
+          volumeMounts:
+            - mountPath: /var/lib/pgsql/data
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-storage

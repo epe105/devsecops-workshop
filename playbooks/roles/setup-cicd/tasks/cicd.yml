@@ -2,7 +2,7 @@
 
 - name: Checkout devsecops-workshop repo
   git:
-    repo: "https://github.com/epe105/devsecops-workshop.git"
+    repo: "https://github.com/{{github_user}}/devsecops-workshop.git"
     dest: "/home/{{ ansible_user }}/devsecops-workshop"
     version: "master"
     force: yes

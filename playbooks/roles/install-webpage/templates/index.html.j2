@@ -216,7 +216,7 @@ $("document").ready(function(){
             <h1 class="project-name"> <strong class="text-nowrap">Red Hat DevSecOps Workshop</strong></h1>
             <h2>This workshop is for demonstrating Red Hat's DevSecOps capabilities through instructor-led exercises.</h2>
 
-              <a href="https://github.com/epe105/devsecops-workshop" class="btn btn-ghost" target="_blank">View on GitHub</a><br><br>
+              <a href="https://github.com/{{github_user}}/devsecops-workshop" class="btn btn-ghost" target="_blank">View on GitHub</a><br><br>
 
             <h1>{{ec2_name_prefix}}.{{openshift_base_domain}}</h1>
 
@@ -267,7 +267,7 @@ $("document").ready(function(){
                         <div class="row">
                             <div class="col-sm-4">
                                 username:   {{generic_user}}{{number}}<br>
-                                password:   {{generic_pass}}<br>                               
+                                password:   {{generic_pass}}<br>
                             </div>
                             <div class="col-sm-4">
                                 <a class="btn btn-secondary btn-block" href="https://{{cluster_name}}.{{openshift_base_domain}}" target="_blank">OpenShift Console</a>
@@ -282,7 +282,7 @@ $("document").ready(function(){
                         <div class="row">
                             <div class="col-sm-4">
                                 username:   {{generic_user}}{{number}}<br>
-                                password:   {{generic_pass}}<br>                               
+                                password:   {{generic_pass}}<br>
                             </div>
                             <div class="col-sm-4">
                                 <a class="btn btn-secondary btn-block" href="https://jenkins-cicd-{{generic_user}}{{number}}.apps.{{cluster_name}}.{{openshift_base_domain}}" target="_blank">CICD (Jenkins)</a>
@@ -321,7 +321,7 @@ $("document").ready(function(){
                                 password:   gogs<br>
                             </div>
                             <div class="col-sm-4">
-                                <a class="btn btn-secondary btn-block" href="http://gogs-cicd-{{generic_user}}{{number}}.apps.{{cluster_name}}.{{openshift_base_domain}}" target="_blank">Source Code Repository (Gogs))</a>
+                                <a class="btn btn-secondary btn-block" href="http://gogs-cicd-{{generic_user}}{{number}}.apps.{{cluster_name}}.{{openshift_base_domain}}" target="_blank">Source Code Repository (Gogs)</a>
                             </div>
                         </div>
                         <div class="row">
@@ -342,8 +342,8 @@ $("document").ready(function(){
                         <div class="row">
                             <div class="col-sm-4">
                                 username:   {{generic_user}}{{number}}<br>
-                                password:   {{generic_pass}}<br>                               
-                            </div>          
+                                password:   {{generic_pass}}<br>
+                            </div>
                             <div class="col-sm-4">
                                 <a class="btn btn-secondary btn-block" href="http://quay-enterprise-quay-enterprise.apps.{{cluster_name}}.{{openshift_base_domain}}" target="_blank">Image Repository (Quay)</a>
                             </div>
@@ -354,10 +354,10 @@ $("document").ready(function(){
                         <div class="row">
                             <div class="col-sm-4">
                                 username:   {{generic_user}}{{number}}<br>
-                                password:   {{generic_pass}}<br>                               
+                                password:   {{generic_pass}}<br>
                             </div>
                             <div class="col-sm-4">
-                                <a class="btn btn-secondary btn-block" href="https://{{cluster_name}}.{{openshift_base_domain}}:8888" target="_blank">Browser Terminal (Wetty)</a>
+                                <a class="btn btn-secondary btn-block" href="http://workshop-terminal-ocwt-{{generic_user}}{{number}}.apps.{{cluster_name}}.{{openshift_base_domain}}" target="_blank">Browser Terminal (Butterfly)</a>
                             </div>
                         </div>
                         <div class="row">

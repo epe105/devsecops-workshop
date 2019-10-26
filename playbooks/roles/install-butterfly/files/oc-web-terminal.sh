@@ -5,7 +5,7 @@ password={{ generic_pass }}
 username={{ generic_user }}
 begin={{ generic_count_begin }}
 count={{ generic_count }}
-pause=5
+pause={{ generic_pause }}
 
 # Configure openshift.
 # if ! oc whoami &>/dev/null; then
@@ -43,6 +43,7 @@ for (( i = $begin; i <= $count; i++ )); do
 
  # Deploy web terminal container.
  oc new-app quay.io/openshiftlabs/workshop-terminal:2.4.0 -n ocwt-$PRJ_SUFFIX
+ # oc new-app quay.io/openshifthomeroom/workshop-terminal -e OC_VERSION=3.11 -n ocwt-$PRJ_SUFFIX
 
  # Expose web terminal container.
  oc expose svc/workshop-terminal -n ocwt-$PRJ_SUFFIX
